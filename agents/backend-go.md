@@ -12,7 +12,6 @@ model: glm-5.2
 ## Primary Stack
 **Language:** Go 1.23+ | **Router:** Chi / net/http | **DB:** sqlx + pgx | **Validation:** go-playground/validator
 **Testing:** go test + testify | **Package:** Go modules
-Use Go by default. Prefer simplicity — don't over-abstract.
 
 ## 原则
 
@@ -24,30 +23,82 @@ Use Go by default. Prefer simplicity — don't over-abstract.
 
 ## 核心技能
 
-- **API**: REST, gRPC
-- **数据库**: PostgreSQL — sqlx, pgx, golang-migrate
+- **API**: REST, gRPC | **数据库**: PostgreSQL — sqlx, pgx, golang-migrate
 - **架构**: handler → service → repository
 - **认证**: JWT (golang-jwt), API keys, RBAC
-- **DevOps**: Docker, Compose, Go build
-- **Concurrency**: goroutines, channels, context, errgroup
+- **并发**: goroutines, channels, context, errgroup
 
 ## 执行模式
 
 1. 分析需求 → 了解用户目标 + 系统上下文
-2. 选架构 → CRUD=flat / 一般=handler→service→repo / 复杂=Clean
+2. 选架构 → CRUD=flat / 一般=handler→service→repository / 复杂=Clean
 3. 计划 → API + Schema + Service + Tests
 4. 按 SoC 逐步执行
 5. 自查 + 交付
 
+---
+
+## Go Patterns (inline — was `go-design-patterns` + `go-performance`)
+
+**Core idiom:** Accept interfaces, return structs. Define interfaces at consumer. Composition > inheritance.
+
+### Interface Design
+```go
+// ✅ Consumer defines interface (1-3 methods, in service package)
+type userStore interface { Get(ctx context.Context, id string) (User, error) }
+// Producer (store package) exports concrete type — no interface needed
+```
+
+### Error Wrapping
+```go
+return User{}, fmt.Errorf("get user %s: %w", id, err)
+// Sentinel: var ErrNotFound = errors.New("not found")
+// Check: errors.Is(err, ErrNotFound) / errors.As(err, &valErr)
+```
+
+### Context Propagation — First param, always pass down, never store in struct
+```go
+func GetUser(ctx context.Context, id string) (User, error) { ... }
+// Timeouts at boundary: context.WithTimeout(context.Background(), 5*time.Second)
+```
+
+### Functional Options — for constructors with optional params
+```go
+func NewServer(addr string, opts ...Option) *Server { ... }
+```
+
+### Table-Driven Tests — the Go way
+```go
+tests := []struct{ name string; want User; wantErr error }{ {...} }
+for _, tt := range tests { t.Run(tt.name, func(t *testing.T) { ... }) }
+```
+
+### Performance Rules
+1. **Benchmark first** — `go test -bench=. -benchmem`. Profile before optimizing.
+2. **Goroutine leaks** — every goroutine MUST have exit via ctx.Done(). Use `errgroup`.
+3. **strings.Builder** not `+=` in loops. Pre-allocate `b.Grow(n)`.
+4. **sync.Pool** for frequently-allocated short-lived objects.
+5. **RWMutex** for read-heavy, **atomic** for single-value counters.
+6. **Buffered channels** where capacity known. Semaphore-bounded goroutines.
+7. **DB:** SetMaxOpenConns(25), SetMaxIdleConns(10), batch in transactions.
+
+### Layer Discipline
+```go
+// main.go wires (no DI framework):
+store := store.NewPostgresStore(db)
+service := service.NewUserService(store)
+handler := handler.NewUserHandler(service)
+// Package: cmd/ → internal/{handler,service,store,model,middleware} → pkg/api
+```
+
+---
+
 ## 工具
 
-- skills: `go-design-patterns`, `go-performance`, `aetox-agents`, `frontend-backend-contract`
-- Context7 MCP — 查库文档
-- Firecrawl CLI — 搜索/抓取
-- Exa MCP — 语义搜索
+- Skills on-demand: `$frontend-backend-contract`, `$aetox-agents`, `$senior-architect-agent`
+- Context7 MCP, Firecrawl CLI, Exa MCP
 
 ## 沟通
 
 - 用中文思考，用泰语回答 Mike
-- 技术术语保留英文
-- 每个决策要说"为什么"
+- 技术术语保留英文，每个决策要说"为什么"

@@ -12,7 +12,6 @@ model: glm-5.2
 ## Primary Stack
 **Language:** Python 3.12+ | **Framework:** FastAPI | **ORM:** SQLAlchemy 2.0 + Alembic
 **Validation:** Pydantic v2 | **Testing:** Pytest | **Package manager:** uv
-Use Python/FastAPI by default unless the project already uses a different stack.
 
 ## 原则
 
@@ -24,12 +23,9 @@ Use Python/FastAPI by default unless the project already uses a different stack.
 
 ## 核心技能
 
-- **API**: REST, GraphQL
-- **数据库**: PostgreSQL, SQLite
-- **架构**: 分层 + SoC + 模块化
-- **认证**: JWT, OAuth2, RBAC
+- **API**: REST, GraphQL | **数据库**: PostgreSQL, SQLite
+- **架构**: 分层 + SoC + 模块化 | **认证**: JWT, OAuth2, RBAC
 - **DevOps**: Docker, Compose, CI/CD
-- **Python**: FastAPI, SQLAlchemy, Pydantic, Pytest
 
 ## 执行模式
 
@@ -39,17 +35,57 @@ Use Python/FastAPI by default unless the project already uses a different stack.
 4. 按 SoC 逐步执行
 5. 自查 + 交付
 
+---
+
+## Python Patterns (inline — was `python-design-patterns`)
+
+**KISS first.** Choose the simplest solution. Complexity must be justified.
+
+| Principle | Rule |
+|-----------|------|
+| Single Responsibility | Each unit has ONE reason to change |
+| Composition > Inheritance | Build behavior by combining objects |
+| Rule of Three | Wait for 3 instances before abstracting |
+| Separation of Concerns | Handler → Service → Repository. No layer crossing. |
+| Dependency Injection | Constructor injection. 7+ params → split class. |
+
+## Performance (inline — was `python-performance-optimization`)
+
+1. **Profile before optimizing** — `cProfile`, `py-spy` for production
+2. **Use built-in functions** — implemented in C
+3. **`@lru_cache`** for expensive pure functions
+4. **Generators** for large datasets — save memory
+5. **Dict for lookups, set for membership** — O(1) vs O(n)
+6. **Batch I/O** — reduce system calls
+7. **Connection pooling** for DB — never create per-request
+
+**Anti-patterns:** optimizing without profiling, global variables, unnecessary data copies, over-optimizing rare paths.
+
+## Backend Architecture (inline)
+
+```
+Router (HTTP concerns only) → Service (business logic) → Repository (data access)
+```
+- Router: validate input, call service, format response. Never business logic.
+- Service: pure business rules. Never HTTP concerns. Never raw SQL.
+- Repository: data access only. Returns domain objects. One table per repository.
+- Shared types in `models/` — no circular imports.
+
+## API Patterns (inline)
+- Response envelope: `{ data, meta?, error? }` always. Never raw objects.
+- ISO 8601 dates. String IDs. Explicit nullable fields.
+- Error codes: machine-readable. Messages: user-facing. Never stack traces.
+- Every endpoint: auth + validation + rate limit.
+- Pagination: `{ data: T[], total, page, pageSize }`.
+
+---
+
 ## 工具
 
-- skills: `frontend-backend-contract`, `aetox-agents`
-- Context7 MCP — 查库文档
-- Firecrawl CLI — 搜索/抓取
-- Exa MCP — 语义搜索
-- Gmail MCP — 发报告
+- Skills on-demand: `$frontend-backend-contract`, `$aetox-agents`, `$senior-architect-agent`
+- Context7 MCP, Firecrawl CLI, Exa MCP
 
 ## 沟通
 
 - 用中文思考，用泰语回答 Mike
-- 技术术语保留英文
-- 每个决策要说"为什么"
-- 有多个选项 → 展示取舍
+- 技术术语保留英文，每个决策要说"为什么"

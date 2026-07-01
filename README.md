@@ -1,55 +1,42 @@
 # 🏴 Aetox Agents Team
 
 > **Self-organizing agent team that builds real software.**
-> Each agent has a clear scope. They don't overlap — they handoff.
-> Contract-first. Evidence-first. No guessing.
+> Contract-first. Evidence-first. Strategy C — inline knowledge, minimal skills.
 
----
+## 🧠 Agents (3)
 
-## 🧠 What is this?
+| Agent | Stack | Lines | Knowledge |
+|-------|:------|:-----:|:----------|
+| **backend-py** ⚙️ | Python / FastAPI | 67 | SoC, Python patterns, performance inline |
+| **backend-go** ⚙️ | Go / Chi | 80 | Go idioms, goroutines, performance inline |
+| **frontend-ts** 🎨 | TypeScript / Next.js | 73 | State mgmt, contract, Tailwind, CSS animation inline |
 
-นี่คือ **ทีม AI agents** สำหรับทำงานในโปรเจกต์จริง (ไม่ใช่ผู้ช่วยส่วนตัว)
-
-- `backend-py` — สร้าง API, database, auth, business logic ด้วย Python/FastAPI
-- `frontend-ts` — สร้าง UI, state, components, accessibility ด้วย TypeScript/Next.js
-
-ทั้งสองตัวทำงานร่วมกันผ่าน **contract** (API spec) และ **AGENTS.md** (project log) — ไม่เดา ไม่มั่ว ไม่ซ้อนกัน
-
-ใช้กับ **ZCode** (Agentic Development Environment) เป็นหลัก — import agent definitions + skills เข้า ZCode แล้วเริ่มทำงานได้เลย
-
----
-
-## 🧠 Agents
-
-| Agent | Scope | Primary Stack |
-|-------|:------|:--------------|
-| **backend-py** ⚙️ | API, database, auth, business logic | Python / FastAPI |
-| **frontend-ts** 🎨 | UI, layout, state, components | TypeScript / Next.js |
-
----
+ใช้กับ **ZCode** เป็นหลัก
 
 ## 🔄 How They Work
 
 ```
-Entry Ritual → Scope Check → Work → Exit Report
+$skill("aetox-agents") → Entry Ritual → Scope Check → Work → Exit Report
 ```
 
-1. **Entry Ritual:** Read `AGENTS.md` in project → report in.
-2. **Scope Check:** Task matches scope? → proceed. Otherwise → handoff.
-3. **Work:** Respect scope. No overlap. Use skills.
-4. **Exit Report:** Log in AGENTS.md. Flag what next agent needs to know.
+1. **Entry Ritual:** Read `AGENTS.md` in project → report in
+2. **Scope Check:** Task matches scope → proceed. Overlap → handoff
+3. **Work:** Respect scope. All core knowledge inline in agent .md
+4. **Exit Report:** Log in AGENTS.md
 
-Load `aetox-agents` skill for the full protocol.
+## 📦 Skills (6 universal on-demand)
 
----
+| Skill | ใช้เมื่อ | ใครใช้ |
+|:--|:--|:--|
+| `aetox-agents` | เริ่มโปรเจกต์ — Entry Ritual, Scope, Handoff | ทุก agent |
+| `frontend-backend-contract` | สร้าง/แก้ API endpoint | ทุก agent |
+| `github` | Git operations | ทุก agent |
+| `context7-mcp` | ค้น docs libraries/frameworks | ทุก agent |
+| `senior-architect-agent` | วิเคราะห์ architecture ก่อนแก้โค้ดใหญ่ | backend-* |
+| `token-saver` | ประหยัด tokens bash output | ทุก agent |
 
-## 📦 Skills
-
-| Skill | Load when |
-|:--|:--|
-| `aetox-agents` | Before any project work — Entry Ritual, Scope, Handoff, Exit |
-| `frontend-backend-contract` | Creating/modifying API endpoints — Contract-first |
-| `frontend-state-management` | Building UI — Server/client/form/URL state patterns |
+> **Strategy C:** Knowledge หลัก inline ใน agent .md หมดแล้ว — skills 6 ตัวนี้โหลด on-demand เท่านั้น
+> Archive: `E:\Aetox\skill-library\` (58 skills — อ้างอิงเวลาต้องการ)
 
 ---
 
@@ -60,10 +47,8 @@ Load `aetox-agents` skill for the full protocol.
 2. Import agents + skills into ZCode
 3. Start: backend-py → reads AGENTS.md → reports → builds API
 4. Continue: frontend-ts → reads AGENTS.md → builds UI
-5. All coordination through AGENTS.md + contract skills
+5. All coordination through AGENTS.md + contract skill
 ```
-
----
 
 ## 🚫 Rules
 
@@ -72,17 +57,13 @@ Load `aetox-agents` skill for the full protocol.
 | ห้ามเดา | ไม่รู้ → ถาม contract → ถาม AGENTS.md |
 | ห้ามซ้อน | สอง agent ห้ามแก้ไฟล์เดียวกัน |
 | ห้ามหาย | จบงานต้องเขียน Exit Report |
-| Contract > Code | `frontend-backend-contract` skill ทุกครั้ง |
-
----
+| Contract > Code | `frontend-backend-contract` ทุกครั้ง |
 
 ## 📁 Repo Structure
 
 ```
-├── agents/         ← Agent definitions (ZCode format)
-├── skills/         ← Shared skills
+├── agents/         ← 3 agent definitions (ZCode, ~70 lines each)
+├── skills/         ← 6 universal skills (on-demand)
 ├── templates/      ← AGENTS.md template
 └── README.md
 ```
-
-> **Related:** `Mike0165115321/ai-agent-team` — Opencode personal agents (steward, minecrafter, etc.) — แยกกัน
