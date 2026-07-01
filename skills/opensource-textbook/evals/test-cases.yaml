@@ -1,0 +1,101 @@
+# Test Cases
+# repo → expected pass level + worthiness range + required artifacts
+#
+# ใช้ทดสอบว่า skill เลือก pass level ถูกต้องและสร้าง artifacts ครบตาม budget
+# https://github.com/aetox-skills/opensource-textbook
+
+cases:
+  # ─── Quick Note ─────────────────────────────────────────────────
+  - id: quick-note-small-util
+    repo: sindresorhus/yoctocolors
+    description: "Tiny utility — ~50 lines, single-file, no architecture depth"
+    expected:
+      pass_level: quick
+      worthiness_min: 30
+      worthiness_max: 49
+      required_artifacts:
+        - quick-note.md
+      forbidden_artifacts:
+        - book-plan.md
+        - chapter-*.md
+
+  - id: quick-note-cli-tool
+    repo: sindresorhus/np
+    description: "Small CLI tool — interactive, single responsibility"
+    expected:
+      pass_level: quick
+      worthiness_min: 30
+      worthiness_max: 49
+
+  # ─── Standard Lesson ────────────────────────────────────────────
+  - id: standard-db-client
+    repo: kriasoft/monode
+    description: "Medium library — has architecture patterns worth teaching"
+    expected:
+      pass_level: standard
+      worthiness_min: 50
+      worthiness_max: 69
+      required_artifacts:
+        - chapter-*.md
+      min_chapters: 1
+      max_chapters: 5
+
+  - id: standard-router
+    repo: honojs/hono
+    description: "Router framework — good architecture, medium complexity, has docs"
+    expected:
+      pass_level: standard
+      worthiness_min: 50
+      worthiness_max: 69
+      min_chapters: 1
+      max_chapters: 5
+
+  # ─── Full Textbook ──────────────────────────────────────────────
+  - id: full-agent-framework
+    repo: anomalyco/opencode
+    description: "AI agent framework — multi-module, design patterns, active community"
+    expected:
+      pass_level: full
+      worthiness_min: 70
+      worthiness_max: 100
+      required_artifacts:
+        - book-plan.md
+        - chapter-*.md
+        - index.md
+      min_chapters: 5
+      max_chapters: 15
+      min_evidence: 10
+
+  - id: full-build-system
+    repo: vercel/turbo
+    description: "Monorepo build system — complex architecture, novel approach, has docs"
+    expected:
+      pass_level: full
+      worthiness_min: 70
+      worthiness_max: 100
+      required_artifacts:
+        - book-plan.md
+        - chapter-*.md
+        - index.md
+
+  # ─── Negative: Skip ─────────────────────────────────────────────
+  - id: negative-hello-world
+    repo: octocat/Hello-World
+    description: "Literally hello world — no architecture depth"
+    expected:
+      pass_level: skip
+      worthiness_max: 29
+
+  - id: negative-archived
+    repo: facebookarchive/nuclide
+    description: "Archived repo — no community, outdated"
+    expected:
+      pass_level: skip
+      worthiness_max: 29
+
+  - id: negative-no-license
+    repo: ""
+    description: "Repo with no license — should flag [!] and warn user"
+    expected:
+      pass_level: skip_or_warn
+      must_flag: "license [!]"

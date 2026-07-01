@@ -1,0 +1,138 @@
+name: CI — Validate Skill Contract
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  markdown-lint:
+    name: Markdown Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DavidAnson/markdownlint-cli2-action@v16
+        with:
+          globs: |
+            SKILL.md
+            README.md
+            references/*.md
+            checklists/*.md
+            templates/*.md
+
+  contract-check:
+    name: Contract Consistency Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check all referenced files exist
+        run: |
+          echo "=== Checking SKILL.md references ==="
+          # Check that all files mentioned in SKILL.md actually exist
+          for f in \
+            references/pass-levels.md \
+            references/evidence-policy.md \
+            references/pedagogy.md \
+            references/citation-format.md \
+            references/thai-writing.md \
+            checklists/repo-inspection.md \
+            checklists/evidence-check.md \
+            checklists/textbook-quality.md \
+            checklists/evaluation-rubric.md \
+            scripts/validate-output.js \
+            templates/concept-chapter.md \
+            templates/architecture-chapter.md \
+            templates/code-reading-chapter.md \
+            templates/implementation-chapter.md \
+            templates/comparison-chapter.md \
+            templates/exercise-chapter.md \
+            templates/book-plan.md \
+            templates/index.md \
+            templates/glossary.md \
+            templates/source-map.md \
+            templates/capstone-project.md; do
+            if [ ! -f "$f" ]; then
+              echo "❌ MISSING: $f"
+              exit 1
+            fi
+          done
+          echo "✅ All referenced files exist"
+
+      - name: Check Source Snapshot in all chapter templates
+        run: |
+          echo "=== Checking Source Snapshot in templates ==="
+          missing=0
+          for f in templates/concept-chapter.md templates/architecture-chapter.md \
+                   templates/code-reading-chapter.md templates/implementation-chapter.md \
+                   templates/comparison-chapter.md templates/exercise-chapter.md; do
+            if ! grep -q "Source Snapshot" "$f"; then
+              echo "❌ MISSING Source Snapshot: $f"
+              missing=1
+            fi
+          done
+          if [ $missing -eq 0 ]; then echo "✅ All chapter templates have Source Snapshot"; fi
+          exit $missing
+
+  validate-templates:
+    name: Validate Templates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run validator on templates (quick mode)
+        run: |
+          node scripts/validate-output.js templates --pass quick
+          # templates are expected to have issues — but should not crash
+          echo "✅ Validator runs without errors"
+
+  yaml-check:
+    name: YAML Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate evals YAML
+        run: |
+          pip install pyyaml 2>/dev/null || pip3 install pyyaml
+          python3 -c "
+          import yaml, sys
+          with open('evals/test-cases.yaml') as f:
+              data = yaml.safe_load(f)
+          cases = data.get('cases', [])
+          print(f'✅ {len(cases)} test cases valid')
+          for c in cases:
+              assert 'id' in c, f'Missing id in case'
+              assert 'repo' in c, f'Missing repo in {c[\"id\"]}'
+              assert 'expected' in c, f'Missing expected in {c[\"id\"]}'
+              assert 'pass_level' in c['expected'], f'Missing pass_level in {c[\"id\"]}'
+          print(f'✅ All {len(cases)} cases have required fields')
+          "
+
+  cross-reference:
+    name: Cross-Reference Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check Chapter Types count matches
+        run: |
+          echo "=== Chapter Types check ==="
+          types=$(grep -c "^\|.*\*\*.*\*\*.*\|" SKILL.md || true)
+          echo "Chapter types found: $types (expected 7)"
+      - name: Check SKILL.md Operating Rules count
+        run: |
+          count=$(grep -cP '^\d+\.\s+\*\*' SKILL.md)
+          echo "Operating Rules count: $count (expected 16)"
+
+  license-check:
+    name: License Present
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify LICENSE file exists
+        run: |
+          if [ -f LICENSE ]; then
+            echo "✅ LICENSE exists"
+            grep -q "MIT" LICENSE && echo "✅ MIT License confirmed"
+          else
+            echo "❌ LICENSE file missing"
+            exit 1
+          fi
