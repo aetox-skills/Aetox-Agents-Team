@@ -1,6 +1,21 @@
 # 🏴 Aetox Agents Team
 
-> **Self-organizing project agents. Contract-first. Scope-respecting.**
+> **Self-organizing agent team that builds real software.**
+> Each agent has a clear scope. They don't overlap — they handoff.
+> Contract-first. Evidence-first. No guessing.
+
+---
+
+## 🧠 What is this?
+
+นี่คือ **ทีม AI agents** สำหรับทำงานในโปรเจกต์จริง (ไม่ใช่ผู้ช่วยส่วนตัว)
+
+- `backend-py` — สร้าง API, database, auth, business logic ด้วย Python/FastAPI
+- `frontend-ts` — สร้าง UI, state, components, accessibility ด้วย TypeScript/Next.js
+
+ทั้งสองตัวทำงานร่วมกันผ่าน **contract** (API spec) และ **AGENTS.md** (project log) — ไม่เดา ไม่มั่ว ไม่ซ้อนกัน
+
+ใช้กับ **ZCode** (Agentic Development Environment) เป็นหลัก — import agent definitions + skills เข้า ZCode แล้วเริ่มทำงานได้เลย
 
 ---
 
@@ -19,33 +34,33 @@
 Entry Ritual → Scope Check → Work → Exit Report
 ```
 
-1. **Entry Ritual:** Read `AGENTS.md` → report in.
+1. **Entry Ritual:** Read `AGENTS.md` in project → report in.
 2. **Scope Check:** Task matches scope? → proceed. Otherwise → handoff.
 3. **Work:** Respect scope. No overlap. Use skills.
-4. **Exit Report:** Log in AGENTS.md. Flag for next agent.
+4. **Exit Report:** Log in AGENTS.md. Flag what next agent needs to know.
 
-All agents load `aetox-agents` skill for the full protocol.
+Load `aetox-agents` skill for the full protocol.
 
 ---
 
 ## 📦 Skills
 
-| Skill | When |
+| Skill | Load when |
 |:--|:--|
-| `aetox-agents` | Before any project work — Entry Ritual, Scope, Handoff, Exit Report |
-| `frontend-backend-contract` | When creating/modifying API endpoints — Contract-first protocol |
-| `frontend-state-management` | When building UI components — Server/client/form/URL state patterns |
+| `aetox-agents` | Before any project work — Entry Ritual, Scope, Handoff, Exit |
+| `frontend-backend-contract` | Creating/modifying API endpoints — Contract-first |
+| `frontend-state-management` | Building UI — Server/client/form/URL state patterns |
 
 ---
 
 ## 🗂️ Project Setup
 
 ```
-Every project:
 1. Copy templates/AGENTS.md → project root
-2. Fill Agent Registry
-3. backend-py starts → reads AGENTS.md → reports → works → exits
-4. frontend-ts picks up → reads AGENTS.md → continues → exits
+2. Import agents + skills into ZCode
+3. Start: backend-py → reads AGENTS.md → reports → builds API
+4. Continue: frontend-ts → reads AGENTS.md → builds UI
+5. All coordination through AGENTS.md + contract skills
 ```
 
 ---
@@ -54,21 +69,20 @@ Every project:
 
 | Rule | Meaning |
 |:--|:--|
-| ห้ามเดา | ไม่รู้ → ถาม contract → ถาม AGENTS.md → ถาม Mike |
-| ห้ามซ้อน | สอง agent ห้ามแก้ไฟล์เดียวกันพร้อมกัน |
+| ห้ามเดา | ไม่รู้ → ถาม contract → ถาม AGENTS.md |
+| ห้ามซ้อน | สอง agent ห้ามแก้ไฟล์เดียวกัน |
 | ห้ามหาย | จบงานต้องเขียน Exit Report |
-| Contract > Code | `frontend-backend-contract` skill ทุกครั้งที่มี API |
+| Contract > Code | `frontend-backend-contract` skill ทุกครั้ง |
 
 ---
 
-## 📁 Structure
+## 📁 Repo Structure
 
 ```
-Aetox-Agents/
-├── agents/          ← Agent definitions (ZCode format)
-├── skills/          ← Shared skills
-├── templates/       ← AGENTS.md template
+├── agents/         ← Agent definitions (ZCode format)
+├── skills/         ← Shared skills
+├── templates/      ← AGENTS.md template
 └── README.md
 ```
 
-> **Note:** Opencode personal agents (steward, minecrafter, etc.) อยู่ใน repo `ai-agent-team` — แยกกันชัดเจน
+> **Related:** `Mike0165115321/ai-agent-team` — Opencode personal agents (steward, minecrafter, etc.) — แยกกัน
