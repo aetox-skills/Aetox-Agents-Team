@@ -3,13 +3,17 @@
 > **Self-organizing agent team that builds real software.**
 > Contract-first. Evidence-first. Strategy C — inline knowledge, minimal skills.
 
-## 🧠 Agents (3)
+## 🧠 Agents (7)
 
 | Agent | Stack | Lines | Knowledge |
 |-------|:------|:-----:|:----------|
 | **backend-py** ⚙️ | Python / FastAPI | 67 | SoC, Python patterns, performance inline |
 | **backend-go** ⚙️ | Go / Chi | 80 | Go idioms, goroutines, performance inline |
 | **frontend-ts** 🎨 | TypeScript / Next.js | 73 | State mgmt, contract, Tailwind, CSS animation inline |
+| **security** 🔒 | — | — | *TBD* |
+| **qa-tester** 🧪 | — | — | *TBD* |
+| **devops** ☸️ | — | — | *TBD* |
+| **ai-engineer** 🤖 | — | — | *TBD* |
 
 ใช้กับ **ZCode** เป็นหลัก
 

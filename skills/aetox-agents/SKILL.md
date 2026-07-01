@@ -28,17 +28,41 @@ description: Aetox Agents collaboration protocol — Entry Ritual, Scope Boundar
 ห้ามทำนอก scope — handoff แทน
 
 ```
-backend-py scope:           frontend-ts scope:
-  ✅ API endpoints             ✅ UI components & pages
-  ✅ Database schema           ✅ Layout, styling, CSS
-  ✅ Business logic            ✅ State management (client)
-  ✅ Auth & permissions        ✅ Forms & validation (client)
-  ✅ Error codes & response    ✅ Accessibility
-  ✅ DevOps / Docker           ✅ Animation & motion
-  ✅ Rate limiting             ✅ Loading/error/empty states
-  ❌ UI, CSS, layout          ❌ API design, database
-  ❌ Client-side state        ❌ Business logic (server)
-  ❌ Image integration        ❌ Auth implementation
+backend-py scope:              frontend-ts scope:
+  ✅ API endpoints                ✅ UI components & pages
+  ✅ Database schema              ✅ Layout, styling, CSS
+  ✅ Business logic               ✅ State management (client)
+  ✅ Auth & permissions           ✅ Forms & validation (client)
+  ✅ Error codes & response       ✅ Accessibility
+  ✅ DevOps / Docker              ✅ Animation & motion
+  ✅ Rate limiting                ✅ Loading/error/empty states
+  ❌ UI, CSS, layout             ❌ API design, database
+  ❌ Client-side state           ❌ Business logic (server)
+  ❌ Image integration           ❌ Auth implementation
+
+security scope:                qa-tester scope:
+  ✅ Dependency scanning          ✅ Test strategy & planning
+  ✅ Code security audit          ✅ Unit/integration/E2E tests
+  ✅ Secrets detection            ✅ Test automation
+  ✅ OWASP review                 ✅ Quality gates & coverage
+  ✅ Docker image scanning        ✅ Bug reports
+  ✅ Security report              ✅ Regression verification
+  ✅ Remediation guidance
+  ❌ Feature development          ❌ Feature development
+  ❌ CI/CD pipeline               ❌ Code design
+  ❌ Infrastructure               ❌ Infrastructure
+
+devops scope:                  ai-engineer scope:
+  ✅ CI/CD pipelines              ✅ LLM integration & APIs
+  ✅ Docker + Compose             ✅ RAG pipeline design
+  ✅ Infrastructure as Code       ✅ Prompt engineering
+  ✅ Deployment (dev/staging/prod) ✅ Vector DB schema & queries
+  ✅ Monitoring & logging         ✅ AI agent orchestration
+  ✅ Backup & disaster recovery   ✅ Embedding & chunking strategy
+  ✅ Environment management       ✅ Token management & cost
+  ❌ Feature development          ❌ Feature development
+  ❌ Test writing                 ❌ Infrastructure
+  ❌ Code audit                   ❌ Test writing
 ```
 
 ---
@@ -127,6 +151,10 @@ Copy ไป project root ทุกโปรเจกต์:
 |-------|:------|:--------------|
 | `backend-py` | API, database, auth, business logic, DevOps | Python / FastAPI |
 | `frontend-ts` | UI, layout, styling, state, components | TypeScript / Next.js |
+| `security` 🔒 | Vuln scanning, code audit, secrets detection, dep security | — |
+| `qa-tester` 🧪 | Test strategy, test automation, quality gates | — |
+| `devops` ☸️ | CI/CD, Docker, infra, deployment, monitoring | — |
+| `ai-engineer` 🤖 | LLM integration, RAG, prompt engineering, AI agents | — |
 
 ---
 
@@ -149,6 +177,10 @@ shared/
 
 backend/               # backend-py territory
 frontend/              # frontend-ts territory
+infra/                 # devops territory
+security/              # security territory
+tests/                 # qa-tester territory (E2E/integration)
+ai/                    # ai-engineer territory
 ```
 
 ## 7. Git Convention
@@ -157,6 +189,10 @@ frontend/              # frontend-ts territory
 feat(backend): add booking endpoint
 feat(frontend): booking list page
 fix(contract): update error response shape
+feat(security): add dep scan workflow
+feat(qa): add API integration tests
+feat(devops): set up CI pipeline
+feat(ai): implement RAG pipeline
 ```
 
 ---
@@ -177,5 +213,9 @@ fix(contract): update error response shape
 
 1. Copy AGENTS.md template → project root
 2. Fill Agent Registry: agents ที่ใช้ในโปรเจกต์นี้
-3. backend-py starts → อ่าน AGENTS.md → รายงานตัว → ทำงาน → Exit Report
+3. backend-py/go starts → อ่าน AGENTS.md → รายงานตัว → ทำงาน → Exit Report
 4. frontend-ts picks up → อ่าน AGENTS.md → ต่อจาก Exit Report → ทำงาน → Exit Report
+5. security audits → รัน dep scan + code review → รายงาน
+6. qa-tester writes tests → unit/integration/E2E → quality gate
+7. devops sets up CI/CD → Docker → deploy → monitoring
+8. ai-engineer implements AI features → LLM + RAG + agents

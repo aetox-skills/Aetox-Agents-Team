@@ -52,6 +52,10 @@
 | `designer` | UI/UX design system, visual polish, motion (frontend-ts internal) | — |
 | `scribe` | Documentation, OpenSource textbooks, Obsidian notes | Markdown |
 | `debugger` | Bug hunting, system analysis, root cause | Any |
+| `security` 🔒 | Vuln scanning, code audit, secrets detection, dep security | — |
+| `qa-tester` 🧪 | Test strategy, test automation, quality gates | — |
+| `devops` ☸️ | CI/CD, Docker, infra, deployment, monitoring | — |
+| `ai-engineer` 🤖 | LLM integration, RAG, prompt engineering, AI agents | — |
 
 ### On-demand (pull when needed)
 
@@ -65,15 +69,33 @@
 ## 📐 Scope Boundaries (CRITICAL)
 
 ```
-backend-py owns:          frontend-ts owns:
-  API endpoints              UI components
-  Database schema            Layout & styling
-  Business logic             State management
-  Auth & permissions         Forms & validation (client-side)
-  Data validation (server)   Accessibility
-  Rate limiting              Animation & motion
-  DevOps / Docker            Image integration
-  Error codes                Loading/error/empty states
+backend-py owns:            frontend-ts owns:
+  API endpoints                UI components
+  Database schema              Layout & styling
+  Business logic               State management
+  Auth & permissions           Forms & validation (client-side)
+  Data validation (server)     Accessibility
+  Rate limiting                Animation & motion
+  DevOps / Docker              Image integration
+  Error codes                  Loading/error/empty states
+
+security owns:              qa-tester owns:
+  Dependency scanning          Test strategy & planning
+  Code security audit          Unit/integration/E2E tests
+  Secrets detection            Test automation
+  OWASP review                 Quality gates & coverage
+  Docker image scanning        Bug reports
+  Security report              Regression verification
+  Remediation guidance
+
+devops owns:                ai-engineer owns:
+  CI/CD pipelines              LLM integration & APIs
+  Docker + Compose             RAG pipeline design
+  Infrastructure as Code       Prompt engineering
+  Deployment (dev/staging/prod) Vector DB schema & queries
+  Monitoring & logging         AI agent orchestration
+  Backup & disaster recovery   Embedding & chunking strategy
+  Environment management       Token management & cost
 
 SHARED (must coordinate):
   API contract               → frontend-backend-contract skill
