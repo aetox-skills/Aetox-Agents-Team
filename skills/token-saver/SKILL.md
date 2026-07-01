@@ -31,6 +31,28 @@ description: Token Saver (RTK Protocol) — Load this skill before running bash 
 
 ---
 
+## ⚡ The Truth Rule — Tee Recovery (READ FIRST)
+
+> RTK filters noise. The tee file keeps the truth. **Never guess errors — read the tee.**
+
+When a filtered command **fails**, RTK saves the full unfiltered output. You MUST read it:
+
+```
+1. Run: rtk tsc --noEmit
+2. Output: FAILED: 3 errors  [full output: C:\Users\...\rtk\tee\xxx.log]
+3. Read that file → see full error → fix code
+4. NEVER: guess the error, ignore the tee, or ask user to re-run
+```
+
+| OS | Tee path |
+|----|----------|
+| Windows | `C:\Users\<user>\AppData\Local\rtk\tee\` |
+| Linux/Mac | `~/.local/share/rtk/tee/` |
+
+**This is how Token Saver "prevents cutting the truth."** RTK removes noise; the tee proves nothing important was removed.
+
+---
+
 ## Tier 1: High-Frequency Commands
 
 These are the most common commands where RTK saves the most. Use as a quick reference.
@@ -63,7 +85,7 @@ RTK filters 100+ commands across these ecosystems. You don't need to memorize th
 - **System:** `ls`, `tree`, `wc` (rtk has compact versions)
 - **Logs:** any log file (rtk deduplicates repeated lines)
 
-If you encounter a new tool: **assume `rtk` works until proven otherwise.** If it doesn't filter well, `rtk proxy` runs it raw.
+If you encounter a new tool: **try `rtk` when output is large or unknown.** If it doesn't filter well, `rtk proxy` runs it raw.
 
 ---
 
@@ -109,32 +131,6 @@ src/api.ts:88:5 - error TS18046         ← AI reads tee for full errors
 
 ---
 
-## ⚡ Tee Recovery Protocol (CRITICAL)
-
-When a filtered command **fails**, RTK saves the full unfiltered output to a tee file.
-
-```
-1. Run: rtk tsc --noEmit
-2. Output: FAILED: 3 errors  [full output: /path/to/rtk/tee/xxx.log]
-3. AI MUST: Read that file → see full error → fix code
-4. NEVER: guess the error, ignore the tee file, or ask user to re-run
-```
-
-| OS | Tee path |
-|----|----------|
-| Windows | `C:\Users\<user>\AppData\Local\rtk\tee\` |
-| Linux/Mac | `~/.local/share/rtk/tee/` |
-
-```toml
-[tee]
-enabled = true
-mode = "failures"
-max_files = 20
-max_file_size = 1048576
-```
-
----
-
 ## Agent Workflow
 
 ```
@@ -145,13 +141,14 @@ About to run bash command?
    │
    ├─ Will output be >5 lines / progress / boilerplate?
    │     ├─ YES → rtk <command>
-   │     └─ NO  → run directly
+   │     ├─ NO  → run directly
+   │     └─ UNSURE → rtk proxy <command> (passthrough, safe)
    │
    ├─ Need full raw output?
    │     └─ YES → rtk proxy <command>
    │
    └─ Command failed with rtk?
-         └─ YES → Read tee file → fix from real error
+         └─ YES → Read tee file → fix from real error (The Truth Rule)
 ```
 
 ---
