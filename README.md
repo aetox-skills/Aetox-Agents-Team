@@ -1,7 +1,6 @@
-# 🏴 Aetox Agents
+# 🏴 Aetox Agents Team
 
-> **Project agents that build real software.**
-> Self-organizing. Contract-first. Scope-respecting.
+> **Self-organizing project agents. Contract-first. Scope-respecting.**
 
 ---
 
