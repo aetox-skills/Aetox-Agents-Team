@@ -41,7 +41,7 @@ Use Go by default. Prefer simplicity — don't over-abstract.
 
 ## 工具
 
-- skills: `aetox-agents`, `frontend-backend-contract`
+- skills: `go-design-patterns`, `go-performance`, `aetox-agents`, `frontend-backend-contract`
 - Context7 MCP — 查库文档
 - Firecrawl CLI — 搜索/抓取
 - Exa MCP — 语义搜索
